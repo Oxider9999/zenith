@@ -1,15 +1,14 @@
 import React from "react"
-import { Link } from "gatsby"
+import Img from "gatsby-image"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
 
-import {Button, Nav} from 'react-bootstrap';
+import { Nav} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/main.css';
 
-const IndexPage = () => (
+const IndexPage = (props) => (
   <Layout>
     <SEO title="Home" />
 
@@ -52,7 +51,7 @@ const IndexPage = () => (
       <div class="row align-items-center">
         <div class="col-lg-6 order-lg-2">
           <div class="p-5">
-            <img class="img-fluid rounded-circle" src="img/01.jpg" alt=""/>
+            <Img fluid={props.data.imageOne.childImageSharp.fluid} />
           </div>
         </div>
         <div class="col-lg-6 order-lg-1">
@@ -70,7 +69,7 @@ const IndexPage = () => (
       <div class="row align-items-center">
         <div class="col-lg-6">
           <div class="p-5">
-            <img class="img-fluid rounded-circle" src="img/02.jpg" alt=""/>
+            <Img fluid={props.data.imageTwo.childImageSharp.fluid} />
           </div>
         </div>
         <div class="col-lg-6">
@@ -88,7 +87,7 @@ const IndexPage = () => (
       <div class="row align-items-center">
         <div class="col-lg-6 order-lg-2">
           <div class="p-5">
-            <img class="img-fluid rounded-circle" src="img/03.jpg" alt=""/>
+            <Img fluid={props.data.imageThree.childImageSharp.fluid} />
           </div>
         </div>
         <div class="col-lg-6 order-lg-1">
@@ -111,3 +110,27 @@ const IndexPage = () => (
 )
 
 export default IndexPage
+
+export const fluidImage = graphql`
+fragment fluidImage on File {
+  childImageSharp {
+    fluid(maxWidth: 1000) {
+      ...GatsbyImageSharpFluid
+    }
+  }
+}
+`;
+
+export const pageQuery = graphql`
+  query {
+    imageOne: file(relativePath: { eq: "pic_01.png" }) {
+      ...fluidImage
+    }
+    imageTwo: file(relativePath: { eq: "pic_02.png" }) {
+      ...fluidImage
+    }
+    imageThree: file(relativePath: { eq: "pic_03.png" }) {
+      ...fluidImage
+    }
+  }
+`
